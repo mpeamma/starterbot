@@ -34,9 +34,16 @@ def handle_scoreboard(command, channel, author):
     user_id, message = parse_direct_mention(command.partition(SCOREBOARD_COMMAND)[2].strip())
     userinfo = get_user_info(user_id)
     authorinfo = get_user_info(author)
-    return "The user mentioned is: " + userinfo["user"]["real_name"] + \
-           ". \nThe message is: " + message +\
+    tokens = message.split()
+    try:
+        amount = float(tokens[0])
+        description = " ".join(tokens[1:]) if len(tokens) > 1 else ""
+        return "The user mentioned is: " + userinfo["user"]["real_name"] + \
+           ". \nThe amount is: " + str(amount) +\
+           ". \nThe description is: " + description +\
            ". \nThe author is " + authorinfo["user"]["real_name"]
+    except:
+        return "Syntax: @User <amount> <description>"
 
 def handle_command(command, channel, author):
     default_response = "Not sure what you mean. Try *{}*.".format(EXAMPLE_COMMAND)
